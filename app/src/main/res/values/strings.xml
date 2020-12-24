@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Maskoki</string>
+    <string name="judul">Resep Masakan</string>
+    <string name="judul2">INDONESIA</string>
+    <string name="judul3">H I D A N G A N
+        T E R B A I K</string>
+    <string name="versi">v e r s i 2.0</string>
+    <string name="login1">Belum memiliki akun ?</string>
+</resources>
