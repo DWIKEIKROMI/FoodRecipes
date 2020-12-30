@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.example.maskoki.R;
 import com.example.maskoki.api.JsonPlaceAPI;
 import com.example.maskoki.databinding.ActivityLoginBinding;
+import com.example.maskoki.models.LoginM;
+import com.example.maskoki.util.SharedPref;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -23,11 +25,13 @@ public class Login extends AppCompatActivity {
     ActivityLoginBinding binding;
     Retrofit retrofit;
     JsonPlaceAPI jsonPlaceAPI;
+    SharedPref sharedPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        sharedPref = new SharedPref(this);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://maskoki.dhanifudin.com/")
@@ -40,20 +44,26 @@ public class Login extends AppCompatActivity {
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<ResponseBody> call = jsonPlaceAPI.Login(binding.usernameL.getText().toString(),
+                Call<LoginM> call = jsonPlaceAPI.Login(binding.usernameL.getText().toString(),
                         binding.passwordL.getText().toString());
-                call.enqueue(new Callback<ResponseBody>() {
+                call.enqueue(new Callback<LoginM>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<LoginM> call, Response<LoginM> response) {
                         if (response.isSuccessful()) {
                             Toast.makeText(Login.this, "Selamat Datang", Toast.LENGTH_SHORT).show();
+                            sharedPref.saveBoolean(SharedPref.SP_LOGIN,true);
+                            sharedPref.saveString(SharedPref.SP_TOKEN,response.body().getToken());
+                            sharedPref.saveString(SharedPref.SP_USERNAME,response.body().getUsername());
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                            intent.putExtra("username", binding.usernameL.getText().toString());
+//                            intent.putExtra("token",response.body().getToken());
                             startActivity(intent);
+                            finish();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(Call<LoginM> call, Throwable t) {
 
                     }
                 });

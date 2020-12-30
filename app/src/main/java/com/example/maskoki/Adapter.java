@@ -14,11 +14,11 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     private List<Post> listMakanan;
-//    private ClickListener clickListener;
+    private ClickListener clickListener;
 
-//    public Adapter(ClickListener clickListener) {
-//        this.clickListener = clickListener;
-//    }
+    public Adapter(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     public void setListMakanan(List<Post> listMakanan) {
         this.listMakanan = listMakanan;
@@ -36,7 +36,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Post makanan = listMakanan.get(position);
-        holder.bind(makanan);
+        holder.bind(makanan, clickListener);
     }
 
     @Override
@@ -54,11 +54,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
             super(binding.getRoot());
             this.binding = binding;
         }
-
-        public void bind(Post makanan){
+        public void bind(Post makanan, ClickListener clickListener){
             binding.setMakanan(makanan);
             Glide.with(binding.imgresep.getContext()).load(makanan.getImage()).into(binding.imgresep);
-//            binding.setClickListener(clickListener);
+            binding.setClicklisterner(clickListener);
             binding.executePendingBindings();
         }
     }

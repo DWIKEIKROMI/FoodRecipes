@@ -5,6 +5,11 @@ import com.google.gson.annotations.SerializedName;
 public class LoginM {
     private String username;
     private String password;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
 
     public LoginM(String username, String password) {
         this.username = username;

@@ -46,7 +46,7 @@ public class Registrasi extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(response.isSuccessful()){
-                            Toast.makeText(Registrasi.this, "Yee Kenek", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Registrasi.this, "Berhasil!, Silahkan login!", Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override

@@ -11,10 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Maskoki">
-        <activity android:name=".layout.DetailResepi" > </activity>
+        <activity android:name=".layout.DetailResepi"></activity>
         <activity android:name=".layout.MainActivity" />
         <activity android:name=".layout.Registrasi" />
-        <activity android:name=".layout.Login"/>
+        <activity android:name=".layout.Login" />
         <activity android:name=".layout.SpalshScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -3,16 +3,20 @@ package com.example.maskoki.layout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.maskoki.Adapter;
+import com.example.maskoki.ClickListener;
 import com.example.maskoki.R;
 import com.example.maskoki.api.JsonPlaceAPI;
 import com.example.maskoki.databinding.ActivityMainBinding;
 import com.example.maskoki.models.Post;
+import com.example.maskoki.util.SharedPref;
 
 import java.util.List;
 
@@ -30,12 +34,24 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     Adapter adapter;
     List<Post> posts;
+    SharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        adapter = new Adapter();
+        sharedPref = new SharedPref(this);
+        binding.Tvname.setText("Hello, "+sharedPref.getUsername()+"!");
+        adapter = new Adapter(new ClickListener() {
+            @Override
+            public void onClickListener(Post post) {
+                Intent intent = new Intent(getApplicationContext(),DetailResepi.class);
+                intent.putExtra("post", post);
+                intent.putExtra("token",getIntent().getStringExtra("token"));
+                intent.putExtra("username", getIntent().getStringExtra("username"));
+                startActivity(intent);
+            }
+        });
         textViewResult = binding.textViewResult;
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://maskoki.dhanifudin.com/")
@@ -61,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
                     content += "Image :"+post.getImage() +"\n";
                     content += "Ingredients :"+post.getIngredients() +"\n";
                     content += "instructions :"+post.getInstructions() +"\n\n";
-
                     textViewResult.append(content);
                 }
                 adapter.setListMakanan(posts);
@@ -76,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void setupRV(){
         recyclerView = binding.rvResep;
-        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         recyclerView.setAdapter(adapter);
     }
